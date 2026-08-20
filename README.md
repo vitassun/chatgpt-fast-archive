@@ -1,5 +1,7 @@
 # ChatGPT Quick Archive
 
+[中文版](README.zh-CN.md)
+
 A lightweight Manifest V3 extension for Chrome and Edge. Hover over a conversation in ChatGPT's left sidebar to reveal an archive button, then archive it immediately without a confirmation dialog.
 
 ## Installation
