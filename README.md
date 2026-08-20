@@ -1,37 +1,37 @@
-# ChatGPT 快速归档
+# ChatGPT Quick Archive
 
-一个适用于 Chrome/Edge 的 Manifest V3 浏览器扩展。在 ChatGPT 左侧会话列表中将鼠标移到某个会话上，右侧会出现归档按钮；点击后直接归档，不弹确认框。
+A lightweight Manifest V3 extension for Chrome and Edge. Hover over a conversation in ChatGPT's left sidebar to reveal an archive button, then archive it immediately without a confirmation dialog.
 
-## 安装
+## Installation
 
-1. 打开 `chrome://extensions`（Edge 使用 `edge://extensions`）。
-2. 开启“开发者模式”。
-3. 点击“加载已解压的扩展程序”，选择本目录。
-4. 打开或刷新 `https://chatgpt.com/`（旧域名 `https://chat.openai.com/` 也支持）。
+1. Open `chrome://extensions` in Chrome, or `edge://extensions` in Edge.
+2. Enable **Developer mode**.
+3. Select **Load unpacked** and choose this project directory.
+4. Open or refresh [`https://chatgpt.com/`](https://chatgpt.com/). The legacy [`https://chat.openai.com/`](https://chat.openai.com/) domain is also supported.
 
-## 使用
+## Usage
 
-将鼠标移到左侧会话行，点击右侧的归档图标。归档成功后该行会立即从当前列表移除。扩展不会打开会话，也不会显示确认对话框。
+Hover over a conversation row in the left sidebar and click the archive icon on the right. After a successful request, the row is removed from the current list. The extension does not open the conversation and does not show a confirmation dialog.
 
-首次使用或登录状态刚恢复时，页面需要先产生一次 ChatGPT 请求以便扩展取得当前会话的临时授权信息。如果归档失败并提示刷新，请刷新 ChatGPT，或先打开任意一个会话后再重试。扩展不会在没有捕获授权头时发送归档请求；后台请求超时为 15 秒，页面消息等待为 18 秒。
+When the extension is used for the first time, or after your login session has been restored, ChatGPT may need to make a request before the extension can obtain a temporary authorization header. If archiving fails and the extension asks you to refresh, refresh ChatGPT or open any conversation once and try again. The extension never sends an archive request without a captured authorization header. The background request times out after 15 seconds; the page waits up to 18 seconds for the result.
 
-## 隐私与权限
+## Privacy and permissions
 
-- 扩展只匹配 `chatgpt.com` 和 `chat.openai.com`。
-- `webRequest` 仅用于读取 ChatGPT 自己的 `backend-api` 请求中的 `Authorization` 和可选 `chatgpt-account-id` 请求头；每条信息只保留 30 分钟，并只保存在浏览器的 `chrome.storage.session` 和扩展运行内存中，用于向 ChatGPT 发起归档请求，不会上传到第三方。收到 401/403 后会清理对应凭据。
-- 归档请求由扩展后台发往当前 ChatGPT 域名的 `/backend-api/conversation/<id>`，请求体为 `{ "is_archived": true }`。
-- 后台请求禁止重定向，只接受 200 或 204 响应，并拒绝 HTML 响应；扩展不会调用删除接口。
+- The extension runs only on `chatgpt.com` and `chat.openai.com`.
+- The `webRequest` permission is used only to read `Authorization` and the optional `chatgpt-account-id` headers from ChatGPT's own `backend-api` requests. Each captured credential is retained for up to 30 minutes in `chrome.storage.session` and the extension's in-memory state, then discarded. Nothing is sent to a third party.
+- The background service worker sends the archive request to the current ChatGPT origin at `/backend-api/conversation/<id>` with `{ "is_archived": true }`.
+- Requests reject redirects and HTML responses and accept only HTTP 200 or 204. The extension never calls a delete endpoint.
 
-## 已知限制
+## Known limitations
 
-- ChatGPT 的页面结构和内部接口可能变化；如果左侧会话列表改用不同链接格式，按钮可能暂时不显示。
-- 当前只处理侧栏中普通 `/c/<conversation-id>` 会话链接，不处理分享链接或其他页面中的会话引用。
-- 扩展只负责归档，不提供批量归档或删除功能；归档后的会话仍可在 ChatGPT 的归档会话入口中恢复。
+- ChatGPT's page structure and internal endpoints can change. If the sidebar uses a different conversation-link format, the button may temporarily stop appearing.
+- Only ordinary sidebar conversations with `/c/<conversation-id>` links are handled. Shared links and conversation references elsewhere on the page are ignored.
+- The extension archives one conversation at a time. It does not provide bulk archive or delete actions. Archived conversations remain recoverable through ChatGPT's archived-chats view.
 
-## 本地检查
+## Local checks
 
-无需安装第三方依赖，可运行：
+The project has no third-party build dependencies. Run:
 
-```text
+```bash
 npm test
 ```
