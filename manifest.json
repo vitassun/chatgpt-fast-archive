@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT 快速归档",
+  "version": "1.0.0",
+  "description": "在 ChatGPT 左侧会话列表中悬停即可一键归档会话。",
+  "action": {
+    "default_title": "ChatGPT 快速归档"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage",
+    "webRequest"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*"
+  ]
+}

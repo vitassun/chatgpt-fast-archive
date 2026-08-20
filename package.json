@@ -1,0 +1,9 @@
+{
+  "name": "chatgpt-fast-archive",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A Manifest V3 extension for archiving ChatGPT sidebar conversations.",
+  "scripts": {
+    "test": "node --test test/smoke.test.js"
+  }
+}
